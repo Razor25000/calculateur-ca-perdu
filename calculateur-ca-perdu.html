@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur CA Perdu | Combien perdez-vous faute de relance?</title>
+    <meta name="description" content="Calculez en 2 minutes combien de CA votre entreprise perd chaque année parce que vos prospects ne sont pas relancés.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #1e293b 100%); }
+        .result-card { background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); }
+        .pulse-animation { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .7; }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white py-16 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">
+                Combien de CA perdez-vous chaque année<br>faute de relance?
+            </h1>
+            <p class="text-xl text-gray-300 mb-8">
+                Calculez en 2 minutes le montant exact que vos prospects non relancés vous coûtent.
+            </p>
+            <div class="bg-white/10 backdrop-blur rounded-lg p-6 max-w-2xl mx-auto">
+                <p class="text-lg">
+                    <span class="font-bold text-yellow-400">En moyenne, une PME B2B perd 30 000 à 50 000€</span> 
+                    chaque année parce que ses prospects ne sont pas relancés assez vite.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Calculator Section -->
+    <section class="py-16 px-4">
+        <div class="max-w-3xl mx-auto">
+            <div class="bg-white rounded-xl shadow-2xl p-8 md:p-12">
+                <h2 class="text-3xl font-bold text-gray-900 mb-8 text-center">
+                    Calculez votre CA perdu
+                </h2>
+                
+                <form id="calculator-form" class="space-y-8">
+                    <!-- Input 1: Nombre de prospects par an -->
+                    <div>
+                        <label for="prospects" class="block text-lg font-semibold text-gray-800 mb-2">
+                            1. Combien de prospects contactez-vous par an?
+                        </label>
+                        <p class="text-sm text-gray-600 mb-3">
+                            (Devis envoyés, demandes reçues, leads entrants)
+                        </p>
+                        <input 
+                            type="number" 
+                            id="prospects" 
+                            min="1" 
+                            value="100"
+                            class="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition"
+                            required
+                        >
+                    </div>
+
+                    <!-- Input 2: Panier moyen -->
+                    <div>
+                        <label for="panier" class="block text-lg font-semibold text-gray-800 mb-2">
+                            2. Quel est votre panier moyen?
+                        </label>
+                        <p class="text-sm text-gray-600 mb-3">
+                            (Montant moyen d'un devis ou d'une vente)
+                        </p>
+                        <div class="relative">
+                            <input 
+                                type="number" 
+                                id="panier" 
+                                min="100" 
+                                value="3000"
+                                class="w-full px-4 py-3 text-lg border-2 border-gray-300 rounded-lg focus:border-blue-500 focus:outline-none transition pr-12"
+                                required
+                            >
+                            <span class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-lg">€</span>
+                        </div>
+                    </div>
+
+                    <!-- Input 3: Taux de non-relance -->
+                    <div>
+                        <label for="taux" class="block text-lg font-semibold text-gray-800 mb-2">
+                            3. Quel % de vos prospects ne sont PAS relancés?
+                        </label>
+                        <p class="text-sm text-gray-600 mb-3">
+                            (Prospects qui ne reçoivent jamais de relance après le premier contact)
+                        </p>
+                        <input 
+                            type="range" 
+                            id="taux" 
+                            min="0" 
+                            max="100" 
+                            value="60"
+                            class="w-full h-3 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600"
+                            required
+                        >
+                        <div class="flex justify-between mt-2">
+                            <span class="text-sm text-gray-600">0%</span>
+                            <span id="taux-display" class="text-2xl font-bold text-blue-600">60%</span>
+                            <span class="text-sm text-gray-600">100%</span>
+                        </div>
+                    </div>
+
+                    <!-- Calculate Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 px-8 rounded-lg transition transform hover:scale-105 shadow-lg"
+                    >
+                        Calculer mon CA perdu
+                    </button>
+                </form>
+
+                <!-- Result Section (hidden by default) -->
+                <div id="result-section" class="hidden mt-12">
+                    <div class="result-card rounded-xl p-8 text-white text-center">
+                        <p class="text-xl mb-2">Vous perdez environ</p>
+                        <p id="ca-perdu" class="text-6xl md:text-7xl font-bold mb-4 pulse-animation">
+                            18 000€
+                        </p>
+                        <p class="text-xl mb-6">de CA chaque année</p>
+                        
+                        <div class="bg-white/20 rounded-lg p-6 mb-6">
+                            <p class="text-lg mb-2">
+                                <span id="prospects-perdus" class="font-bold text-2xl">60</span> prospects non relancés
+                            </p>
+                            <p class="text-sm">
+                                × <span id="panier-affiche" class="font-bold">3 000€</span> de panier moyen
+                            </p>
+                            <p class="text-sm mt-2">
+                                (en supposant que 30% auraient converti avec une relance rapide)
+                            </p>
+                        </div>
+
+                        <p class="text-lg mb-6">
+                            C'est l'équivalent de <span id="mois-perdus" class="font-bold text-2xl">6</span> mois de chiffre d'affaires qui partent en fumée.
+                        </p>
+                    </div>
+
+                    <!-- Explanation Section -->
+                    <div class="mt-12 bg-gray-50 rounded-xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                            Pourquoi vous perdez ce CA?
+                        </h3>
+                        
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <span class="text-red-600 font-bold">1</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">
+                                        Vos commerciaux n'ont pas le temps
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        Entre les appels, les réunions et les devis à rédiger, ils n'ont que 2-3h par jour pour relancer. Résultat: ils ne relancent que les prospects "chauds" et oublient les autres.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <span class="text-red-600 font-bold">2</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">
+                                        Les prospects refroidissent vite
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        Un prospect qui ne reçoit pas de réponse en 24h passe à un concurrent. En 48h, il a oublié votre offre. En 7 jours, il a signé ailleurs.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-4">
+                                <div class="flex-shrink-0 w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                                    <span class="text-red-600 font-bold">3</span>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-lg text-gray-900 mb-2">
+                                        La relance manuelle est inefficace
+                                    </h4>
+                                    <p class="text-gray-700">
+                                        Relancer 100 prospects prend 20h/semaine. C'est cher, lent, et vos commerciaux détestent ça. Résultat: ils le font mal, ou pas du tout.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Solution Section -->
+                    <div class="mt-12 bg-blue-50 border-2 border-blue-200 rounded-xl p-8">
+                        <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                            Comment récupérer ce CA?
+                        </h3>
+                        
+                        <p class="text-lg text-gray-800 mb-6">
+                            J'installe un agent IA (Hermes) qui relance <span class="font-bold">100% de vos prospects en moins de 2 minutes</span>, 24h/24, 7j/7.
+                        </p>
+
+                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white rounded-lg p-6">
+                                <div class="text-3xl mb-3">⚡</div>
+                                <h4 class="font-bold text-lg mb-2">Réponse en moins de 2 min</h4>
+                                <p class="text-gray-700">Vos prospects reçoivent une réponse personnalisée avant même de passer à un concurrent.</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-6">
+                                <div class="text-3xl mb-3">🤖</div>
+                                <h4 class="font-bold text-lg mb-2">Ne dort jamais</h4>
+                                <p class="text-gray-700">L'IA relance vos prospects le week-end, la nuit, pendant vos vacances. Zéro prospect oublié.</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-6">
+                                <div class="text-3xl mb-3">💬</div>
+                                <h4 class="font-bold text-lg mb-2">Traite les objections</h4>
+                                <p class="text-gray-700">L'IA répond aux questions basiques ("c'est trop cher", "je vais réfléchir") et qualifie les prospects chauds.</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-6">
+                                <div class="text-3xl mb-3">📊</div>
+                                <h4 class="font-bold text-lg mb-2">Rapport hebdomadaire</h4>
+                                <p class="text-gray-700">Vous recevez chaque semaine un rapport: prospects relancés, réponses reçues, rendez-vous pris.</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-lg p-6 mb-6">
+                            <h4 class="font-bold text-lg mb-3">Résultat typique après 90 jours:</h4>
+                            <ul class="space-y-2 text-gray-800">
+                                <li class="flex gap-2">
+                                    <span class="text-green-600 font-bold">✓</span>
+                                    <span><strong>100% des prospects relancés</strong> (au lieu de 40% actuellement)</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-green-600 font-bold">✓</span>
+                                    <span><strong>+30% de rendez-vous qualifiés</strong> (prospects qui étaient "froids" et qui reviennent)</span>
+                                </li>
+                                <li class="flex gap-2">
+                                    <span class="text-green-600 font-bold">✓</span>
+                                    <span><strong>30-50k€ de CA récupéré</strong> sur l'année</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- CTA -->
+                        <div class="text-center">
+                            <p class="text-xl font-bold text-gray-900 mb-4">
+                                Vous voulez savoir combien VOUS pouvez récupérer?
+                            </p>
+                            <a 
+                                href="https://calendly.com/regis-innovwebdesign/audit-ca-perdu" 
+                                target="_blank"
+                                class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold text-xl py-4 px-8 rounded-lg transition transform hover:scale-105 shadow-lg"
+                            >
+                                Réserver un audit gratuit (15 min)
+                            </a>
+                            <p class="text-sm text-gray-600 mt-3">
+                                Ou envoyez-moi un DM sur LinkedIn pour en discuter
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Social Proof -->
+                    <div class="mt-12 text-center">
+                        <p class="text-gray-600 mb-4">Ils ont récupéré leur CA perdu:</p>
+                        <div class="flex flex-wrap justify-center gap-6">
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <p class="text-2xl font-bold text-blue-600">+42k€</p>
+                                <p class="text-sm text-gray-600">PME BTP (150 prospects/an)</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <p class="text-2xl font-bold text-blue-600">+28k€</p>
+                                <p class="text-sm text-gray-600">Industrie (80 prospects/an)</p>
+                            </div>
+                            <div class="bg-white rounded-lg p-4 shadow-md">
+                                <p class="text-2xl font-bold text-blue-600">+35k€</p>
+                                <p class="text-sm text-gray-600">Services (200 prospects/an)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 text-gray-400 py-8 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="mb-2">
+                <span class="font-bold text-white">Régis Laffond</span> — Expert IA pour PME
+            </p>
+            <p class="text-sm">
+                J'aide les PME B2B à récupérer le CA perdu faute de relance grâce à l'agent IA Hermes.
+            </p>
+            <div class="mt-4 flex justify-center gap-6 text-sm">
+                <a href="https://www.linkedin.com/in/regis-laffond-innovwebdesign target="_blank" class="hover:text-white transition">LinkedIn</a>
+                <a href="mailto:regis.laffond@innovwebdesign.fr" class="hover:text-white transition">Contact</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Update taux display
+        const tauxInput = document.getElementById('taux');
+        const tauxDisplay = document.getElementById('taux-display');
+        
+        tauxInput.addEventListener('input', (e) => {
+            tauxDisplay.textContent = e.target.value + '%';
+        });
+
+        // Calculator logic
+        const form = document.getElementById('calculator-form');
+        const resultSection = document.getElementById('result-section');
+        
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const prospects = parseInt(document.getElementById('prospects').value);
+            const panier = parseInt(document.getElementById('panier').value);
+            const taux = parseInt(document.getElementById('taux').value);
+            
+            // Calcul: prospects non relancés × panier × 30% (taux de conversion avec relance)
+            const prospectsPerdus = Math.round(prospects * (taux / 100));
+            const caPerdu = Math.round(prospectsPerdus * panier * 0.30);
+            const moisPerdus = Math.round(caPerdu / (panier * 10)); // estimation: 10 ventes/mois en moyenne
+            
+            // Affichage
+            document.getElementById('ca-perdu').textContent = caPerdu.toLocaleString('fr-FR') + '€';
+            document.getElementById('prospects-perdus').textContent = prospectsPerdus;
+            document.getElementById('panier-affiche').textContent = panier.toLocaleString('fr-FR') + '€';
+            document.getElementById('mois-perdus').textContent = moisPerdus;
+            
+            // Afficher la section résultat
+            resultSection.classList.remove('hidden');
+            
+            // Scroll vers le résultat
+            resultSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    </script>
+</body>
+</html>
